@@ -39,7 +39,7 @@ add_library(nnxx::nnxx ALIAS ${PROJECT_NAME})
 target_include_directories(${PROJECT_NAME}
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>
-        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/nnxx>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
         ${NANOMSG_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} PUBLIC nanomsg)
 
@@ -59,13 +59,15 @@ install(
 )
 install(
     DIRECTORY nanomsg/ext
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/nnxx
-    PATTERN "*.c*" EXCLUDE
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/nanomsg
+    FILES_MATCHING PATTERN "*.h*"
 )
 install(
     DIRECTORY nnxx
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/nnxx
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
     PATTERN "*.c*" EXCLUDE
+    PATTERN "README" EXCLUDE
+    PATTERN "wscript" EXCLUDE
 )
 install(EXPORT NnxxTargets
     FILE NnxxTargets.cmake
