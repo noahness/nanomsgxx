@@ -1,4 +1,4 @@
-project(nnxx)
+project(nnxx VERSION ${VERSION} LANGUAGES CXX)
 
 find_package(nanomsg CONFIG REQUIRED)
 
