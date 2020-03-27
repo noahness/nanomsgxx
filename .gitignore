@@ -23,7 +23,10 @@
 # Waf
 .waf*
 .lock*
-build/*
+build/
+
+# CMake artifacts
+bin/
 
 # Emacs
 *~
