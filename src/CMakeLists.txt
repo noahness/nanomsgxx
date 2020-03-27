@@ -1,3 +1,5 @@
+project(nnxx)
+
 find_package(nanomsg CONFIG REQUIRED)
 
 IF(!nanomsg_FOUND)
