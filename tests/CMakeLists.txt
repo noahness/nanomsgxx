@@ -1,4 +1,3 @@
-project(nnxx_tests)
 include(CTest)
 
 message(STATUS ${EXECUTABLE_OUTPUT_PATH})
