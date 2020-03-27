@@ -1,4 +1,4 @@
-project(nnxx VERSION ${VERSION} LANGUAGES CXX)
+project(nnxx VERSION ${VERSION} LANGUAGES C CXX)
 
 find_package(nanomsg CONFIG REQUIRED)
 

@@ -11,7 +11,7 @@ set(VERSION_MINOR    2)
 set(VERSION_PATCH    1)
 set(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
-project(nanomsgxx VERSION ${VERSION} LANGUAGES CXX)
+project(nanomsgxx VERSION ${VERSION} LANGUAGES C CXX)
 
 # project wide C++ options and include direcories:
 set (CMAKE_CXX_STANDARD 11)
