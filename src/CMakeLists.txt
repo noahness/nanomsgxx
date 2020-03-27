@@ -32,34 +32,65 @@ set(NNXX_SRCS   ./nnxx/error.cpp
                 ./nnxx/tcp.cpp
                 ./nnxx/timeout.cpp)
 
-set(NNXX_HDRS   ./nanomsg/ext/nnxx_ext.h
-                ./nnxx/bus.h
-                ./nnxx/chrono.h
-                ./nnxx/error.h
-                ./nnxx/inproc.h
-                ./nnxx/ipc.h
-                ./nnxx/message.h
-                ./nnxx/message_control.h
-                ./nnxx/message_istream.h
-                ./nnxx/message_iterator.h
-                ./nnxx/message_ostream.h
-                ./nnxx/message_streambuf.h
-                ./nnxx/nn.h
-                ./nnxx/pair.h
-                ./nnxx/pipeline.h
-                ./nnxx/poll.h
-                ./nnxx/pubsub.h
-                ./nnxx/reqrep.h
-                ./nnxx/socket.h
-                ./nnxx/survey.h
-                ./nnxx/tcp.h
-                ./nnxx/timeout.h
-                ./nnxx/unittest.h)
-
 add_library(${PROJECT_NAME} ${NANOMSG_SRCS} ${NNXX_SRCS})
-add_library(lib::nnxx ALIAS ${PROJECT_NAME})
-target_include_directories(${PROJECT_NAME} PUBLIC "." ${NANOMSG_INCLUDE_DIRS})
+add_library(nnxx::nnxx ALIAS ${PROJECT_NAME})
+target_include_directories(${PROJECT_NAME}
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/nnxx>
+        ${NANOMSG_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} PUBLIC nanomsg)
 
-install(TARGETS ${PROJECT_NAME} DESTINATION lib)
-install(FILES ${NNXX_HDRS} DESTINATION include/nnxx)
+########################
+# installation
+########################
+# set up libbasecamp_service install
+set(INSTALL_CONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/Nnxx)
+
+install(
+    TARGETS
+        ${PROJECT_NAME}
+    EXPORT NnxxTargets
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+install(
+    DIRECTORY nanomsg/ext
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/nnxx
+    PATTERN "*.c*" EXCLUDE
+)
+install(
+    DIRECTORY nnxx
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/nnxx
+    PATTERN "*.c*" EXCLUDE
+)
+install(EXPORT NnxxTargets
+    FILE NnxxTargets.cmake
+    NAMESPACE nnxx::
+    DESTINATION ${INSTALL_CONFIGDIR}
+)
+
+########################
+# ConfigVersion file
+########################
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+    ${CMAKE_CURRENT_BINARY_DIR}/NnxxConfigVersion.cmake
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY AnyNewerVersion
+)
+
+configure_package_config_file(
+    ${CMAKE_SOURCE_DIR}/CMake/NnxxConfig.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/NnxxConfig.cmake
+    INSTALL_DESTINATION ${INSTALL_CONFIGDIR}
+)
+
+# Install all the helper files
+install(
+    FILES
+      ${CMAKE_CURRENT_BINARY_DIR}/NnxxConfig.cmake
+      ${CMAKE_CURRENT_BINARY_DIR}/NnxxConfigVersion.cmake
+    DESTINATION ${INSTALL_CONFIGDIR}
+)
