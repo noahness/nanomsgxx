@@ -4,6 +4,6 @@ include(CMakeFindDependencyMacro)
 
 find_dependency(nanomsg 1.1.5 REQUIRED)
 
-if(NOT TARGET nnxx::libnnxx)
+if(NOT TARGET nnxx::nnxx)
     include(${CMAKE_CURRENT_LIST_DIR}/NnxxTargets.cmake)
 endif()

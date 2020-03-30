@@ -1,4 +1,4 @@
-project(libnnxx VERSION ${VERSION} LANGUAGES C CXX)
+project(nnxx VERSION ${VERSION} LANGUAGES C CXX)
 
 find_package(nanomsg CONFIG REQUIRED)
 
@@ -35,7 +35,7 @@ set(NNXX_SRCS   ./nnxx/error.cpp
                 ./nnxx/timeout.cpp)
 
 add_library(${PROJECT_NAME} ${NANOMSG_SRCS} ${NNXX_SRCS})
-add_library(nnxx::libnnxx ALIAS ${PROJECT_NAME})
+add_library(nnxx::nnxx ALIAS ${PROJECT_NAME})
 target_include_directories(${PROJECT_NAME}
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>
